@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/matlab,python,jupyternotebooks
 # Edit at https://www.toptal.com/developers/gitignore?templates=matlab,python,jupyternotebooks
 
+#virtual environment
+FEM/
+
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks
 # website: http://jupyter.org/

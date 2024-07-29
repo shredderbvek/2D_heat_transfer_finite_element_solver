@@ -7,5 +7,5 @@ function [] = plotHeatFlux(x1, x2, x3, y1, y2, y3, connect, coord, q)
   title('$Heat \; flux \; W/m^2 $','Interpreter','latex')
   hold on
   triplot(connect,coord(:,1),coord(:,2),'k');
-  saveas(gcf, 'heatFluxOverDomain.png');
+  saveas(gcf, fullfile("gfx", "heatFluxOverDomain.png"));
  end
