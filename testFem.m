@@ -116,9 +116,9 @@ if nOfEdgesConvection > 0
   yb = coord(convectionNodes(:,2),2);
 
   % Compute the length of the edges on a convection boundary
-  edgeLength = zeros(1, nOfEdgesConvection);
+  edgeLengthCauchy = zeros(1, nOfEdgesConvection);
   for iEdge = 1:nOfEdgesConvection
-      edgeLength(iEdge) = sqrt((xb(iEdge)-xa(iEdge))^2+(yb(iEdge)-ya(iEdge))^2);
+      edgeLengthCauchy(iEdge) = sqrt((xb(iEdge)-xa(iEdge))^2+(yb(iEdge)-ya(iEdge))^2);
   end
 end
 %--------------------------------------------------------------------------
@@ -140,9 +140,9 @@ if nOfEdgesFlux > 0
   yb = coord(fluxNodes(:,2),2);
 
   % Compute the length of the edges on a convection boundary
-  edgeLength = zeros(1, nOfEdgesFlux);
+  edgeLengthNeumann = zeros(1, nOfEdgesFlux);
   for iEdge = 1:nOfEdgesFlux
-      edgeLength(iEdge) = sqrt((xb(iEdge)-xa(iEdge))^2+(yb(iEdge)-ya(iEdge))^2);
+      edgeLengthNeumann(iEdge) = sqrt((xb(iEdge)-xa(iEdge))^2+(yb(iEdge)-ya(iEdge))^2);
   end
 end
 %==========================================================================
@@ -194,7 +194,7 @@ if nOfEdgesConvection > 0
     K(globalEdgeNodes,globalEdgeNodes) = K(globalEdgeNodes,globalEdgeNodes) + hTe;
 
     % Compute contribution to global convection forcing vector
-    rinfty = hCoeff(iEdge)*Tinfinity(iEdge)*edgeLength(iEdge)/2*[1; 1];
+    rinfty = hCoeff(iEdge)*Tinfinity(iEdge)*edgeLengthCauchy(iEdge)/2*[1; 1];
 
     % Assembly: Add contribution to global convection forcing vector
     Rinfty(globalEdgeNodes) = Rinfty(globalEdgeNodes) + rinfty;
@@ -206,7 +206,7 @@ end
 Rq = zeros(nOfNodes, 1);
 if nOfEdgesFlux > 0
   for iEdge = 1: nOfEdgesFlux
-    rq = 0.5 * elementalFlux(iEdge) * edgeLength(iEdge)*[1 ; 1];
+    rq = 0.5 * elementalFlux(iEdge) * edgeLengthNeumann(iEdge)*[1 ; 1];
     globalEdgeNodes = fluxNodes(iEdge,:);
     Rq(globalEdgeNodes) = Rq(globalEdgeNodes) + rq;
   end

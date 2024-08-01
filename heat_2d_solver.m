@@ -111,9 +111,9 @@ function [coord, connect, T, R, q, x1, x2, x3, y1, y2, y3] = heat_2d_solver(file
     yb = coord(convectionNodes(:,2),2);
 
     % Compute the length of the edges on a convection boundary
-    edgeLength = zeros(1, nOfEdgesConvection);
+    edgeLengthCauchy = zeros(1, nOfEdgesConvection);
     for iEdge = 1:nOfEdgesConvection
-        edgeLength(iEdge) = sqrt((xb(iEdge)-xa(iEdge))^2+(yb(iEdge)-ya(iEdge))^2);
+        edgeLengthCauchy(iEdge) = sqrt((xb(iEdge)-xa(iEdge))^2+(yb(iEdge)-ya(iEdge))^2);
     end
   end
   %--------------------------------------------------------------------------
@@ -135,9 +135,9 @@ function [coord, connect, T, R, q, x1, x2, x3, y1, y2, y3] = heat_2d_solver(file
     yb = coord(fluxNodes(:,2),2);
 
     % Compute the length of the edges on a convection boundary
-    edgeLength = zeros(1, nOfEdgesFlux);
+    edgeLengthNeumann = zeros(1, nOfEdgesFlux);
     for iEdge = 1:nOfEdgesFlux
-        edgeLength(iEdge) = sqrt((xb(iEdge)-xa(iEdge))^2+(yb(iEdge)-ya(iEdge))^2);
+        edgeLengthNeumann(iEdge) = sqrt((xb(iEdge)-xa(iEdge))^2+(yb(iEdge)-ya(iEdge))^2);
     end
   end
   %==========================================================================
@@ -182,7 +182,7 @@ function [coord, connect, T, R, q, x1, x2, x3, y1, y2, y3] = heat_2d_solver(file
   if nOfEdgesConvection > 0
     for iEdge = 1:nOfEdgesConvection
       % Compute convection contribution to global stiffness matrix
-      hTe = hCoeff(iEdge)*edgeLength(iEdge)/6*[ 2  1 ; 1  2 ];
+      hTe = hCoeff(iEdge)*edgeLengthCauchy(iEdge)/6*[ 2  1 ; 1  2 ];
 
       % Assembly: Add convection contribution to global stiffness matrix
       globalEdgeNodes = convectionNodes(iEdge,:);
@@ -201,7 +201,7 @@ function [coord, connect, T, R, q, x1, x2, x3, y1, y2, y3] = heat_2d_solver(file
   Rq = zeros(nOfNodes, 1);
   if nOfEdgesFlux > 0
     for iEdge = 1: nOfEdgesFlux
-      rq = 0.5 * elementalFlux(iEdge) * edgeLength(iEdge)*[1 ; 1];
+      rq = 0.5 * elementalFlux(iEdge) * edgeLengthNeumann(iEdge)*[1 ; 1];
       globalEdgeNodes = fluxNodes(iEdge,:);
       Rq(globalEdgeNodes) = Rq(globalEdgeNodes) + rq;
     end
