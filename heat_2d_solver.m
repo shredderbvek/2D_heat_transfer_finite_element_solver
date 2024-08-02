@@ -27,8 +27,6 @@ function [coord, connect, T, R, q, x1, x2, x3, y1, y2, y3] = heat_2d_solver(file
   elementOrder = connect(:,1);
   connect = connect(:,2:nOfElemNodes+1);
 
-  %connect(elementOrder,:) = connect;
-
   %--------------------------------------------------------------------------
   % Read nodal coordinates
   %--------------------------------------------------------------------------
@@ -247,9 +245,6 @@ function [coord, connect, T, R, q, x1, x2, x3, y1, y2, y3] = heat_2d_solver(file
   end
 
   % Compute fluxes
-  % Plot mesh with heat flow vector distribution
-  xcentre = (x1 + x2 + x3)/3;
-  ycentre = (y1 + y2 + y3)/3;
   q = zeros(nOfElements, 2);
   for iElem = 1:nOfElements
       % Compute element heat flow vector
